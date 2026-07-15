@@ -93,8 +93,7 @@ async def follow_user(api_key: Annotated[str, Header()], id: int) -> dict | str:
         logger.info(f"Получен текущий пользователь {user_me}")
 
         user_following = await get_any_user_profile(id, session)
-        logger.info(f"Получен пользователь,"
-                    f"на которого подписываемся {user_following}")
+        logger.info(f"Получен пользователь на которого подписываемся {user_following}")
 
         logger.info("Проверяем подписку")
         check = user_following in user_me.following
@@ -240,9 +239,7 @@ async def post_new_tweet(api_key: Annotated[str, Header()], tweet: TweetIn) -> d
         # Добавляем изображение к новому твиту
         if tweet_images:
             logger.info("Твит содержит картинку")
-            await update_tweet_id_in_images(
-                tweet_images, new_tweet_id, session
-            )
+            await update_tweet_id_in_images(tweet_images, new_tweet_id, session)
             return {"result": "true", "tweet_id": new_tweet_id}
 
         else:
