@@ -1,36 +1,38 @@
+import logging
+from contextlib import asynccontextmanager
 from typing import Annotated
+
 import aiofiles
-from sqlalchemy import select
-from schemas import (
-    UserOut,
-    TweetOut,
-    TweetIn,
-    MediaOut,
-    DoUndoLike,
-    FollowUser,
-    TweetDelete,
-    TweetsByFollowing,
-)
 from fastapi import FastAPI, Header, UploadFile
 from fastapi.responses import FileResponse
-from contextlib import asynccontextmanager
-from database import engine, async_session, Base, Images
-import logging
+from sqlalchemy import select
+
 from crud import (
+    add_following,
+    add_new_tweet,
+    collect_data_for_tweets,
     create_data,
-    get_my_profile,
-    get_any_user_profile,
+    delete_following,
+    delete_like_from_tweet,
+    deleting_tweet,
     form_data_for_user,
     form_path_for_media,
-    update_tweet_id_in_images,
-    add_new_tweet,
-    add_following,
-    send_like_for_tweet,
-    delete_like_from_tweet,
-    delete_following,
+    get_any_user_profile,
     get_list_of_tweets,
-    collect_data_for_tweets,
-    deleting_tweet,
+    get_my_profile,
+    send_like_for_tweet,
+    update_tweet_id_in_images,
+)
+from database import Base, Images, async_session, engine
+from schemas import (
+    DoUndoLike,
+    FollowUser,
+    MediaOut,
+    TweetDelete,
+    TweetIn,
+    TweetOut,
+    TweetsByFollowing,
+    UserOut,
 )
 
 logger = logging.getLogger("logger_for_app")
@@ -128,7 +130,6 @@ async def unfollow_user(api_key: Annotated[str, Header()], id: int) -> dict | st
         user_following = await get_any_user_profile(id, session)
         logger.info(f"Получен пользователь, от которого отписываемся {user_following}")
 
-        # Проверяем, подписан ли текущий пользователь на того, от кого он хочет отписаться
         logger.info(
             "Проверяем, подписан ли текущий пользователь на того, от кого он хочет отписаться"
         )
