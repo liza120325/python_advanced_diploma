@@ -36,13 +36,13 @@ jobs:
         run: pip install pydantic
 
       - name: Проверка mypy
-        run: mypy linter/
+        run: mypy fastapi/
 
       - name: Проверка black
-        run: black --diff --check linter/
+        run: black --diff --check fastapi/
       
       - name: Проверка isort
-        run: isort --profile black --check-only --diff linter/
+        run: isort --profile black --check-only --diff fastapi/
 
       - name: Проверка flake8
-        run: flake8 --max-line-length=90 linter/
+        run: flake8 --max-line-length=90 fastapi/
