@@ -35,9 +35,6 @@ jobs:
       - name: Установка pydantic
         run: pip install pydantic
 
-      - name: Проверка mypy
-        run: mypy fastapi/
-
       - name: Проверка black
         run: black --diff --check fastapi/
       
@@ -46,3 +43,6 @@ jobs:
 
       - name: Проверка flake8
         run: flake8 --max-line-length=90 fastapi/
+
+      - name: Проверка mypy
+        run: mypy fastapi/
