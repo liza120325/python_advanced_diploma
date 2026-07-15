@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получение кода репозитория
+        uses: actions/checkout@v4
+        
+      - name: Установка питона
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Установка зависимостей
+        run: pip install -r requirements.txt
+
+      - name: Установка sqlalchemy
+        run: pip install sqlalchemy asyncpg
+
+      - name: Установка psycopg
+      - run: pip install "psycopg[binary]"
+
+      - name: Установка fastapi
+        run: pip install fastapi
+
+      - name: Установка pydantic
+        run: pip install pydantic
+
+      - name: Проверка mypy
+        run: mypy linter/
+
+      - name: Проверка black
+        run: black --diff --check linter/
+      
+      - name: Проверка isort
+        run: isort --profile black --check-only --diff linter/
+
+      - name: Проверка flake8
+        run: flake8 --max-line-length=90 linter/
