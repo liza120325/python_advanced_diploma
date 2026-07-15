@@ -1,9 +1,11 @@
-from typing import Annotated
 from pathlib import Path
-from sqlalchemy import select, update, insert, delete, and_, func, or_
-from sqlalchemy.orm import selectinload
+from typing import Annotated
+
 from fastapi import Header
-from database import async_session, User, Likes, Twits, Images
+from sqlalchemy import and_, delete, func, insert, or_, select, update
+from sqlalchemy.orm import selectinload
+
+from database import Images, Likes, Twits, User, async_session
 
 
 async def create_data() -> None | str:
